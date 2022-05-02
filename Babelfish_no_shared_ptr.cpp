@@ -64,11 +64,13 @@ void dict::addWord(std:: string translation, std::string to_add){
         // bool word_exists_already = false;
         if(temp->foreign_word == new_entry->foreign_word){
             // word_exists_already = true;
+            delete new_entry;
             return;
         }
         while(temp->next_entry){
             if(temp->next_entry->foreign_word == new_entry->foreign_word){
                 // word_exists_already = true;
+                delete new_entry;
                 return;
             }
             temp = temp->next_entry;
@@ -112,6 +114,7 @@ void dict::getInput(){
         std::string to_add = line.substr(line.find(" ")+1);
         
         this->addWord(translation, to_add);
+        line = "";
     }
     line = "";
     while(std::getline(std::cin, l) && l.size() != 0){
@@ -121,13 +124,17 @@ void dict::getInput(){
     std::string w = "";
     size_t i = 0;
 
+    /**
     while(line[i] != ' ' && i < line.size()){
+        std::cout << "    word: " << word << std::endl;
         word += line[i];
         i += 1;
     }
     w = this->lookUp(word);
     std::cout << w;
     i += 1;
+    **/
+    bool is_first_word = true;
     while(i < line.size()){
         while(line[i] != ' '){
             word += line[i];
@@ -135,7 +142,13 @@ void dict::getInput(){
         }
         i += 1;
         w = this->lookUp(word);
-        std::cout << std::endl << w;
+        if (is_first_word){
+            std::cout << w;
+            is_first_word = false;
+        }
+        else{
+            std::cout << std::endl << w;
+        }
         word = "";
     }
 
@@ -177,7 +190,21 @@ dict::~dict(){
 int main(){
     dict d;
     
-    d.getInput();
+    d.getInput();/**
+    d.addWord("loops", "oopslay");
+    d.addWord("loops", "oopslay");
+    d.addWord("mouse", "ousemay");
+    d.addWord("booty", "ootybay");
+    d.addWord("cat", "atcay");
+    d.addWord("cat", "atca");
+
+    std::string w = d.lookUp("ootybay");
+    std::cout << w << std::endl;
+    w = d.lookUp("atcay");
+    std::cout << w << std::endl;
+    w = d.lookUp("atca");
+    std::cout << w << std::endl;
+    **/
     /**
     std::string line;
     while(std::getline(std::cin, line) && line.size() != 0){
